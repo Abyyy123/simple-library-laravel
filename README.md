@@ -1,61 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Simple Library API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Proyek sederhana untuk membuat RESTful API CRUD (Create, Read, Update, Delete) untuk manajemen data buku menggunakan Laravel dan MySQL.
 
-## About Laravel
+## Prasyarat
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* PHP (versi 8.2 atau lebih baru)
+* Composer
+* MySQL Server
+* Postman/Insomnia (untuk pengujian API)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠️ Setup Project
 
-## Learning Laravel
+1.  **Clone Repositori:**
+    ```bash
+    git clone [LINK_REPOSITORY_ANDA] SimpleLibrary
+    cd SimpleLibrary
+    ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2.  **Instal Dependensi:**
+    ```bash
+    composer install
+    ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+3.  **Konfigurasi Environment:**
+    Salin file `.env.example` menjadi `.env` dan buat kunci aplikasi.
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+4.  **Konfigurasi Database (MySQL):**
+    Buka file `.env` dan sesuaikan pengaturan koneksi Anda:
+    
+    ***PENTING: Pastikan Anda telah membuat database kosong (misalnya `simple_library`) di server MySQL Anda.***
+    ```dotenv
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=simple_library # Ganti dengan nama database Anda
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
 
-## Laravel Sponsors
+5.  **Siapkan Skema dan Data Awal:**
+    Pilih salah satu dari dua opsi berikut untuk menyiapkan database:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    ### Opsi A: Menggunakan Migrasi dan Seeder (Direkomendasikan Laravel)
+    Perintah ini akan membuat tabel `books` dan mengisi minimal 5 data buku yang sudah disiapkan di *seeder* (`DatabaseSeeder.php`).
+    ```bash
+    php artisan migrate --seed
+    ```
+    
+    ### Opsi B: Import Database yang Sudah Siap (Opsional)
+    Jika Anda membutuhkan database yang sudah siap, *dump file* database (`simple_library.sql`) telah disediakan di folder `database/`. Anda dapat mengimpornya langsung menggunakan tools seperti phpMyAdmin, Sequel Pro, atau command line:
+    ```bash
+    # (Contoh jika menggunakan command line, ganti sesuai nama file dan database Anda)
+    mysql -u [DB_USERNAME] -p [DB_DATABASE] < database/simple_library.sql
+    ```
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## ▶️ Cara Menjalankan Project
 
-## Contributing
+1.  **Jalankan Server Laravel:**
+    ```bash
+    php artisan serve
+    ```
+2.  Server API akan berjalan di **`http://127.0.0.1:8000`**.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 📌 Pengujian API Endpoint
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Gunakan Postman atau *tool* lain untuk menguji API di URL dasar **`http://127.0.0.1:8000/api`**.
 
-## Security Vulnerabilities
+| Metode | Endpoint | Keterangan | Contoh Body (POST/PUT) |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/books` | List semua buku. | N/A |
+| `POST` | `/api/books` | Tambah buku. | `{"title": "Judul Baru", "author": "Penulis", "year": 2024}` |
+| `GET` | `/api/books/1` | Detail buku dengan ID 1. | N/A |
+| `PUT` | `/api/books/1` | Update data buku ID 1. | `{"title": "Judul Diubah", "author": "Penulis Baru"}` |
+| `DELETE` | `/api/books/1` | Hapus buku ID 1. | N/A |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
